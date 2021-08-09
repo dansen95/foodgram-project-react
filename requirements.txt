@@ -1,0 +1,12 @@
+django
+Pillow
+psycopg2
+djoser
+djangorestframework
+django-filter
+gunicorn==20.1.0
+python-dotenv
+drf-extra-fields
+reportlab
+fontTools
+rinoh-typeface-dejavuserif
