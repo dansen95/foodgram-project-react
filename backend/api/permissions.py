@@ -4,9 +4,10 @@ from rest_framework import permissions
 class AdminOrAuthorOrReadOnly(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        if request.method == 'POST':
-            return request.user.is_authenticated
-        return True
+        return (
+            request.method == 'POST' 
+            and request.user.is_authenticated
+        )
 
     def has_object_permission(self, request, view, obj):
         if (request.method in ['PUT', 'PATCH', 'DELETE']
