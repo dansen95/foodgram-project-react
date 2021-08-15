@@ -16,7 +16,7 @@ from .models import (CustomUser, Favorite, Ingredient,
 from users.models import Follow
 from .paginators import PageNumberPaginatorModified
 from .permissions import AdminOrAuthorOrReadOnly
-from .serializers import (AddFavouriteRecipeSerializer, CreateRecipeSerializer,
+from .serializers import (CreateRecipeSerializer,
                           IngredientSerializer, ListRecipeSerializer,
                           ShowFollowersSerializer, TagSerializer,
                           FollowSerializer, FavoriteSerializer,
@@ -81,7 +81,7 @@ class FollowView(APIView):
         }
         serializer = FollowSerializer(data=data, context={'request': request})
 
-        serializer.is_valid(raise_exception=True)
+        serializer.is_valid()
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -109,7 +109,7 @@ class FavouriteView(APIView):
             data=data,
             context={'request': request}
         )
-        serializer.is_valid(raise_exception=True)
+        serializer.is_valid()
         serializer.save()
         return Response(
             serializer.data,
@@ -119,10 +119,9 @@ class FavouriteView(APIView):
     def delete(self, request, recipe_id):
         user = request.user
         recipe = get_object_or_404(Recipe, id=recipe_id)
+        obj = get_object_or_404(Favorite, user=user, recipe=recipe)
+        obj.delete()
 
-        Favorite.objects.get(
-            user=user,
-            recipe=recipe).delete()
         return Response(
             status=status.HTTP_204_NO_CONTENT
         )
@@ -141,15 +140,16 @@ class ShoppingListView(APIView):
 
         context = {'request': request}
         serializer = ShoppingListSerializer(data=data, context=context)
-        serializer.is_valid(raise_exception=True)
+        serializer.is_valid()
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def delete(self, request, recipe_id):
         user = request.user
         recipe = get_object_or_404(Recipe, id=recipe_id)
+        obj = get_object_or_404(ShoppingList, user=user, recipe=recipe)
+        obj.delete()
 
-        ShoppingList.objects.get(user=user, recipe=recipe).delete()
         return Response(
             status=status.HTTP_204_NO_CONTENT
         )
