@@ -81,7 +81,10 @@ class FollowView(APIView):
         }
         serializer = FollowSerializer(data=data, context={'request': request})
 
-        serializer.is_valid()
+        if not serializer.is_valid():
+            Response(
+            status=status.HTTP_400_BAD_REQUEST
+        )
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -109,7 +112,11 @@ class FavouriteView(APIView):
             data=data,
             context={'request': request}
         )
-        serializer.is_valid()
+
+        if not serializer.is_valid():
+            Response(
+            status=status.HTTP_400_BAD_REQUEST
+        )
         serializer.save()
         return Response(
             serializer.data,
@@ -140,7 +147,11 @@ class ShoppingListView(APIView):
 
         context = {'request': request}
         serializer = ShoppingListSerializer(data=data, context=context)
-        serializer.is_valid()
+
+        if not serializer.is_valid():
+            Response(
+            status=status.HTTP_400_BAD_REQUEST
+        )
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 

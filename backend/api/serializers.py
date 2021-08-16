@@ -50,8 +50,8 @@ class IngredientSerializer(serializers.ModelSerializer):
 
 
 class FollowSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(queryset=Follow.objects.all())
-    author = serializers.PrimaryKeyRelatedField(queryset=Follow.objects.all())
+    user = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
+    author = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
 
     class Meta:
         model = Follow
@@ -78,6 +78,7 @@ class FollowSerializer(serializers.ModelSerializer):
         return ShowFollowersSerializer(
             instance.author,
             context=context).data
+
 
 class RepresentSerializer(serializers.ModelSerializer):
 
@@ -164,14 +165,14 @@ class IngredientInRecipeSerializer(serializers.ModelSerializer):
 
 
 class IngredientInRecipeSerializerToCreateRecipe(serializers.ModelSerializer):
-    id = serializers.PrimaryKeyRelatedField(source='ingredient.id')
+    id = serializers.PrimaryKeyRelatedField(source='ingredient')
     name = serializers.SlugRelatedField(
         source='ingredient',
         read_only=True,
         slug_field='name'
     )
     measurement_unit = serializers.SlugRelatedField(
-        source='measurement_unit',
+        source='ingredient',
         read_only=True,
         slug_field='measurement_unit'
     )
@@ -259,7 +260,7 @@ class ShowRecipeSerializer(FlagSerializer):
                   'name', 'image', 'text', 'cooking_time')
 
     def get_ingredients(self, obj):
-        qs = IngredientInRecipe.objects.filter(recipe=obj)
+        qs = IngredientInRecipe.objects.select_related('recipes_ingredients_list')
         return IngredientInRecipeSerializer(qs, many=True).data
 
 
