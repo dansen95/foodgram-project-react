@@ -5,7 +5,7 @@ class AdminOrAuthorOrReadOnly(permissions.BasePermission):
 
     def has_permission(self, request, view):
         return (
-            request.method == 'POST' 
+            request.method == 'POST'
             and request.user.is_authenticated
         )
 

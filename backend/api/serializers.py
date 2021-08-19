@@ -5,7 +5,6 @@ from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
 from django.db import transaction
-from django.shortcuts import get_object_or_404
 
 from .models import (CustomUser, Favorite, Ingredient,
                      IngredientInRecipe, Recipe, ShoppingList, Tag)
@@ -38,7 +37,7 @@ class TagSerializer(serializers.ModelSerializer):
         match = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', color)
         if not match:
             raise serializers.ValidationError('hex is not valid')
-        
+
         return data
 
 
@@ -50,8 +49,12 @@ class IngredientSerializer(serializers.ModelSerializer):
 
 
 class FollowSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
-    author = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
+    user = serializers.PrimaryKeyRelatedField(
+        queryset=CustomUser.objects.all()
+    )
+    author = serializers.PrimaryKeyRelatedField(
+        queryset=CustomUser.objects.all()
+    )
 
     class Meta:
         model = Follow
@@ -91,8 +94,12 @@ class RepresentSerializer(serializers.ModelSerializer):
 
 
 class FavoriteSerializer(RepresentSerializer):
-    recipe = serializers.PrimaryKeyRelatedField(queryset=Recipe.objects.all())
-    user = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
+    recipe = serializers.PrimaryKeyRelatedField(
+        queryset=Recipe.objects.all()
+    )
+    user = serializers.PrimaryKeyRelatedField(
+        queryset=CustomUser.objects.all()
+    )
 
     class Meta:
         model = Favorite
@@ -165,7 +172,10 @@ class IngredientInRecipeSerializer(serializers.ModelSerializer):
 
 
 class IngredientInRecipeSerializerToCreateRecipe(serializers.ModelSerializer):
-    id = serializers.PrimaryKeyRelatedField(source='ingredient')
+    id = serializers.PrimaryKeyRelatedField(
+        source='ingredient',
+        read_only=True
+    )
     name = serializers.SlugRelatedField(
         source='ingredient',
         read_only=True,
@@ -194,7 +204,9 @@ class ListRecipeSerializer(FlagSerializer):
                   'name', 'image', 'text', 'cooking_time')
 
     def get_ingredients(self, obj):
-        qs = IngredientInRecipe.objects.select_related('recipes_ingredients_list')
+        qs = IngredientInRecipe.objects.select_related(
+            'recipes_ingredients_list'
+        )
         return IngredientInRecipeSerializerToCreateRecipe(qs, many=True).data
 
 
@@ -212,7 +224,6 @@ class RecipeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Recipe
         fields = '__all__'
-
 
 
 class ShowFollowerRecipeSerializer(serializers.ModelSerializer):
@@ -260,7 +271,7 @@ class ShowRecipeSerializer(FlagSerializer):
                   'name', 'image', 'text', 'cooking_time')
 
     def get_ingredients(self, obj):
-        qs = IngredientInRecipe.objects.select_related('recipes_ingredients_list')
+        qs = obj.recipes_ingredients_list.all()
         return IngredientInRecipeSerializer(qs, many=True).data
 
 

@@ -83,8 +83,9 @@ class FollowView(APIView):
 
         if not serializer.is_valid():
             Response(
-            status=status.HTTP_400_BAD_REQUEST
-        )
+                serializer.errors,
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -115,8 +116,10 @@ class FavouriteView(APIView):
 
         if not serializer.is_valid():
             Response(
-            status=status.HTTP_400_BAD_REQUEST
-        )
+                serializer.errors,
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
         serializer.save()
         return Response(
             serializer.data,
@@ -134,7 +137,6 @@ class FavouriteView(APIView):
         )
 
 
-
 class ShoppingListView(APIView):
     permission_classes = (IsAuthenticated, )
 
@@ -150,8 +152,10 @@ class ShoppingListView(APIView):
 
         if not serializer.is_valid():
             Response(
-            status=status.HTTP_400_BAD_REQUEST
-        )
+                serializer.errors,
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
