@@ -57,9 +57,10 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            sudo docker pull dansen95/foodgram
+            sudo docker pull dansen95/foodgram:latest
+            sudo docker pull dansen95/foodgram-frontend:latest
             sudo docker-compose stop
-            sudo docker-compose rm web
+            sudo docker-compose rm dansen95_web_1
             touch .env 
             echo SECRET_KEY=${{ secrets.SECRET_KEY }} > .env
             echo DB_NAME=${{ secrets.DB_NAME }} >> .env
