@@ -11,9 +11,7 @@ services:
       - ./.env
 
   backend:
-    build:
-      context: ../backend
-      dockerfile: Dockerfile
+    image: dansen95/foodgram:latest
     restart: always
     depends_on:
       - db
@@ -24,9 +22,7 @@ services:
       - ./.env
 
   frontend:
-    build:
-      context: ../frontend
-      dockerfile: Dockerfile
+    image: dansen95/foodgram-frontend:latest
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:
