@@ -60,7 +60,6 @@ jobs:
             sudo docker pull dansen95/foodgram:latest
             sudo docker pull dansen95/foodgram-frontend:latest
             sudo docker-compose stop
-            sudo docker-compose rm web
             sudo docker-compose up -d 
             
   send_message:
