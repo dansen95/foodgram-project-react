@@ -44,6 +44,8 @@ services:
     depends_on:
       - backend
       - frontend
+    environment:
+      - SERVER_NAME=127.0.0.1 localhost 84.252.129.10
 
 volumes:
   postgres_data:
