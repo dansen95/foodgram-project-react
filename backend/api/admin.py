@@ -10,7 +10,7 @@ class RecipeAdmin(admin.ModelAdmin):
 
     @admin.display(empty_value=None)
     def followers(self, obj):
-        return obj.favorite_recipe.all().count()
+        return obj.favorite_recipes.all().count()
 
 
 class IngredientAdmin(admin.ModelAdmin):
