@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from .models import Favorite, Ingredient, Recipe, ShoppingList, Tag
+from .models import (Favorite, Ingredient, Recipe,
+                     ShoppingList, Tag, IngredientInRecipe)
 from users.models import Follow
 
 
@@ -23,3 +24,4 @@ admin.site.register(Ingredient, IngredientAdmin)
 admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(Favorite)
 admin.site.register(ShoppingList)
+admin.site.register(IngredientInRecipe)
