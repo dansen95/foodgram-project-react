@@ -204,9 +204,7 @@ class ListRecipeSerializer(FlagSerializer):
                   'name', 'image', 'text', 'cooking_time')
 
     def get_ingredients(self, obj):
-        qs = IngredientInRecipe.objects.select_related(
-            'recipes_ingredients_list'
-        )
+        qs = IngredientInRecipe.objects.filter(recipe=obj)
         return IngredientInRecipeSerializerToCreateRecipe(qs, many=True).data
 
 
