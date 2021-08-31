@@ -335,7 +335,7 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         print(self.initial_data)
-        print(self.data)
+        print(data)
         ingredients = self.initial_data.get('ingredients')
         for ingredient_item in ingredients:
             if int(ingredient_item['amount']) <= 0:
@@ -344,7 +344,6 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
                         'Количество ингридиента должно быть больше нуля!'
                     )
                 })
-        print(data)
         return data
 
     def to_representation(self, instance):
