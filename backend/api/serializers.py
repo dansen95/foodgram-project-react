@@ -301,9 +301,9 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
         print(ingredients_data)
         IngredientInRecipe.objects.bulk_create([
             IngredientInRecipe(
-                ingredient=ingredient['ingredients']['id'],
+                ingredient=ingredient['ingredients_data']['id'],
                 recipe=recipe,
-                amount=ingredient['ingredients']['amount']
+                amount=ingredient['ingredients_data']['amount']
             ) for ingredient in ingredients_data
         ])
 
