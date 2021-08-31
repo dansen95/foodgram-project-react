@@ -284,7 +284,10 @@ class AddIngredientToRecipeSerializer(serializers.ModelSerializer):
 class CreateRecipeSerializer(serializers.ModelSerializer):
     image = Base64ImageField(max_length=None, use_url=True)
     author = BaseUserSerializer(read_only=True)
-    ingredients = AddIngredientToRecipeSerializer(many=True)
+    ingredients = AddIngredientToRecipeSerializer(
+        many=True,
+        source='ingredients_data'
+    )
     tags = serializers.PrimaryKeyRelatedField(
         queryset=Tag.objects.all(), many=True
     )
@@ -331,6 +334,8 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
         return instance
 
     def validate(self, data):
+        print(self.initial_data)
+        print(self.data)
         ingredients = self.initial_data.get('ingredients')
         for ingredient_item in ingredients:
             if int(ingredient_item['amount']) <= 0:
@@ -339,6 +344,7 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
                         'Количество ингридиента должно быть больше нуля!'
                     )
                 })
+        print(data)
         return data
 
     def to_representation(self, instance):
