@@ -274,6 +274,7 @@ class ShowRecipeSerializer(FlagSerializer):
 
 
 class AddIngredientToRecipeSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
     amount = serializers.IntegerField()
 
     class Meta:
@@ -284,10 +285,7 @@ class AddIngredientToRecipeSerializer(serializers.ModelSerializer):
 class CreateRecipeSerializer(serializers.ModelSerializer):
     image = Base64ImageField(max_length=None, use_url=True)
     author = BaseUserSerializer(read_only=True)
-    ingredients = AddIngredientToRecipeSerializer(
-        many=True,
-        source='ingredients_data'
-    )
+    ingredients = AddIngredientToRecipeSerializer(many=True)
     tags = serializers.PrimaryKeyRelatedField(
         queryset=Tag.objects.all(), many=True
     )
