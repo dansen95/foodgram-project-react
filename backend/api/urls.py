@@ -13,7 +13,7 @@ router.register('ingredients', IngredientViewSet, basename='ingredients')
 urlpatterns = [
     path('users/subscriptions/',
          showfollows, name='users_subs'),
-    path('users/<int:user_id>/subscribe/',
+    path('users/<int:author_id>/subscribe/',
          FollowView.as_view(), name='subscribe'),
     path('recipes/<int:recipe_id>/favorite/',
          FavouriteView.as_view(), name='add_recipe_to_favorite'),

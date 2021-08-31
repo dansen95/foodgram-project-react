@@ -274,23 +274,12 @@ class ShowRecipeSerializer(FlagSerializer):
 
 
 class AddIngredientToRecipeSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(
-        source='ingredient.id'
-    )
-    amount = serializers.IntegerField(
-        source='ingredient.amount'
-    )
-    name = serializers.CharField(
-        source='ingredient.name'
-    )
-    measurement_unit = serializers.CharField(
-        source='ingredient.measurement_unit'
-    )
+    id = serializers.IntegerField()
+    amount = serializers.IntegerField()
 
     class Meta:
         model = Ingredient
-        fields = ('id', 'amount',
-                  'name', 'measurement_unit')
+        fields = ('id', 'amount')
 
 
 class CreateRecipeSerializer(serializers.ModelSerializer):
@@ -310,7 +299,7 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
         print(ingredients_data)
         IngredientInRecipe.objects.bulk_create([
             IngredientInRecipe(
-                ingredient=ingredient,
+                ingredient=Ingredient.objects.get(id=ingredient['id']),
                 recipe=recipe,
                 amount=ingredient['amount']
             ) for ingredient in ingredients_data
