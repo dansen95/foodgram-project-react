@@ -274,8 +274,18 @@ class ShowRecipeSerializer(FlagSerializer):
 
 
 class AddIngredientToRecipeSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField()
-    amount = serializers.IntegerField()
+    id = serializers.IntegerField(
+        source='ingredient.id'
+    )
+    amount = serializers.IntegerField(
+        source='ingredient.amount'
+    )
+    name = serializers.CharField(
+        source='ingredient.name'
+    )
+    measurement_unit = serializers.CharField(
+        source='ingredient.measurement_unit'
+    )
 
     class Meta:
         model = Ingredient
