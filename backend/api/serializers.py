@@ -309,7 +309,7 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def create(self, validated_data):
-        ingredients_data = validated_data.pop('ingredients')
+        ingredients_data = validated_data.pop('ingredients_data')
         tags_data = validated_data.pop('tags')
         author = self.context.get('request').user
         recipe = Recipe.objects.create(author=author, **validated_data)
@@ -320,7 +320,7 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def update(self, instance, validated_data):
-        ingredients_data = validated_data.pop('ingredients')
+        ingredients_data = validated_data.pop('ingredients_data')
         tags_data = validated_data.pop('tags')
         IngredientInRecipe.objects.filter(recipe=instance).delete()
         self.create_ingredients(instance, ingredients_data)
